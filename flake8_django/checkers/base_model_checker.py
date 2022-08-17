@@ -19,6 +19,17 @@ class BaseModelChecker(Checker):
             and element.value.value is True
         )
 
+    @staticmethod
+    def _get_mro_names(base):
+        """
+        Return list of inherited classes.
+        """
+        result = globals().get(base.node.name)
+        result = eval(base.node.name)
+        return [
+            model.__name__ for model in globals().get(base.node.name).__mro__
+        ]
+
     def is_abstract_model(self, base):
         """
         Return True if AST node has a Meta class with abstract = True.
@@ -38,7 +49,7 @@ class BaseModelChecker(Checker):
         """
         return (
             isinstance(base, ast.Name) and
-            base.id == self.model_name_lookup
+            self.model_name_lookup in self._get_mro_names(base)
         )
 
     def is_models_name_lookup_attribute(self, base):
@@ -48,5 +59,5 @@ class BaseModelChecker(Checker):
         return (
             isinstance(base, ast.Attribute) and
             isinstance(base.value, ast.Name) and
-            base.value.id == 'models' and base.attr == self.model_name_lookup
+            self.model_name_lookup in self._get_mro_names(base)
         )

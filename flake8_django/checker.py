@@ -21,19 +21,19 @@ class DjangoStyleFinder(ast.NodeVisitor):
     Visit the node, and return issues.
     """
     checkers = {
-        'Call': [
-            ModelFieldChecker(),
-            RenderChecker(),
-        ],
+        # 'Call': [
+        #     ModelFieldChecker(),
+        #     RenderChecker(),
+        # ],
         'ClassDef': [
-            ModelFormChecker(),
+            # ModelFormChecker(),
             ModelDunderStrMissingChecker(),
-            ModelMetaChecker(),
-            ModelContentOrderChecker(),
+            # ModelMetaChecker(),
+            # ModelContentOrderChecker(),
         ],
-        'FunctionDef': [
-            DecoratorChecker(),
-        ]
+        # 'FunctionDef': [
+        #     DecoratorChecker(),
+        # ]
     }
 
     def __init__(self, *args, **kwargs):
